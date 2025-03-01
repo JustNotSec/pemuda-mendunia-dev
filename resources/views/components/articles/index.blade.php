@@ -213,7 +213,7 @@
           <a class="group flex items-center gap-x-6 focus:outline-none" href="#">
             <div class="grow">
               <span class="text-sm font-bold text-gray-800 group-hover:text-blue-600 group-focus:text-blue-600">
-              Generasi Muda Indonesia Terlibat dalam Program Pemuda Mendunia untuk Meningkatkan Kapasitas Global
+              Generasi Muda Indonesia Terlibat dalam Program Pemuda Mendunia untuk Meningkatkan Kapasitas Globalzz
               </span>
             </div>
 
