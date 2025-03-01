@@ -1,67 +1,31 @@
-name: Auto Deploy to CPanel (With Sync Check)
-
+name: Publish Website to CPanel
 on:
   push:
     branches:
       - master
-
 jobs:
-  deploy:
-    name: Deploy to CPanel
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2 # Ambil dua commit terakhir buat bandingin perubahan
+    - uses: actions/checkout@v2.1.0
+      with:
+        fetch-depth: 2 
+    - name: Build assets
+      run: npm install && npm run build
 
-      - name: Setup Node.js
-        uses: actions/checkout@v2.1.0
-        with:
-          cache: 'npm'
+    - name: Install PHP and Composer
+      uses: shivammathur/setup-php@v2
+      with:
+          php-version: '8.2' # Adjust to match the PHP version used by your Laravel project
+          tools: 'composer'
 
-      - name: Install Dependencies & Build Assets
-        run: |
-          npm install
-          npm run build
-
-      - name: Install PHP and Composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          tools: composer
-
-      - name: Install PHP dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Compare Local & Remote Files
-        id: check_changes
-        run: |
-          sudo apt-get install -y lftp
-          lftp -e "mirror --dry-run --reverse --verbose --exclude-glob .git/ --exclude-glob node_modules/ --exclude-glob vendor/ ./ /public_html/; bye" -u ${{ secrets.USERNAME }},${{ secrets.PASSWORD }} ${{ secrets.SERVER }} | tee ftp-diff.log
-          if grep -q "Would transfer:" ftp-diff.log; then
-            echo "changes_detected=true" >> $GITHUB_ENV
-          else
-            echo "changes_detected=false" >> $GITHUB_ENV
-          fi
-
-      - name: Deploy via FTP (Only If Changes Detected)
-        if: env.changes_detected == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ secrets.SERVER }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          server-dir: "/public_html/" # Sesuaikan dengan folder di CPanel lu
-          local-dir: "./" # Folder lokal yang mau di-upload
-          exclude: |
-            **/.git*
-            **/.github*
-            **/node_modules/*
-            **/vendor/*
-          dangerous-clean-slate: false # Cuma update file yang berubah aja
-
-      - name: No Changes Found
-        if: env.changes_detected == 'false'
-        run: echo "✅ Tidak ada perubahan, tidak perlu upload ke CPanel."
+    - name: Install PHP dependencies
+      run: composer install --no-dev --optimize-autoloader
+        
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
+      with:
+        server: ${{ secrets.SERVER }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
