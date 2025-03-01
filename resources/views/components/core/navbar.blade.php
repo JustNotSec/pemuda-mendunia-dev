@@ -72,17 +72,17 @@
 
     <!-- Articles -->
     <div>
-      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="#">Articles</a>
+      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="/articles">Articles</a>
     </div>
 
     <!-- Gallery -->
     <div>
-      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="#">Gallery</a>
+      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="/gallery">Gallery</a>
     </div>
 
     <!-- Contact -->
     <div>
-      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="#">Contact Us</a>
+      <a class="inline-block text-black font-bold hover:text-gray-600 focus:outline-none" href="/contact-us">Contact Us</a>
     </div>
   </div>
 </div>

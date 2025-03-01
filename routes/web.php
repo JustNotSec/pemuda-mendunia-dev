@@ -28,3 +28,14 @@ Route::get('/articles', function () {
 Route::get('/articlesmain', function () {
     return view('main.mainarticles');
 });
+
+
+Route::get('/articles', function () {
+    return view('main.404');
+});
+Route::get('/gallery', function () {
+    return view('main.404');
+});
+Route::get('/contact-us', function () {
+    return view('main.404');
+});
